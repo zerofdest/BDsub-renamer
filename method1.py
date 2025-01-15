@@ -48,11 +48,25 @@ def renamer(directory, begin_serial_number):
     n = len(ass_files)
     mkv_files_raw = mkv_files[start_index:start_index + n]
 
-    if len(mkv_files_raw) < n:
+    if len(mkv_files_raw) < n and 2* len(mkv_files_raw) != n:
         print(f"错误: 从 {begin_serial_number} 开始的 .mkv 文件不足以匹配所有 .ass 文件")
         return
 
-    rename_log = generate_rename_log(mkv_files_raw, ass_files)
+    if len(ass_files) == 2 * len(mkv_files_raw):
+        rename_log = []
+        for i, mkv_file in enumerate(mkv_files_raw):
+            video_prefix = os.path.splitext(mkv_file)[0]
+
+            subtitle_1 = ass_files[2 * i]
+            subtitle_2 = ass_files[2 * i + 1]
+
+            new_subtitle_1 = video_prefix + '.TC.ass'
+            new_subtitle_2 = video_prefix + '.SC.ass'
+
+            rename_log.append((subtitle_1, new_subtitle_1))
+            rename_log.append((subtitle_2, new_subtitle_2))
+    else:
+        rename_log = generate_rename_log(mkv_files_raw, ass_files)
     
     while True:
         preview_rename_log(rename_log)
