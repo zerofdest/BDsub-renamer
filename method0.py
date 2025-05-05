@@ -43,7 +43,6 @@ def main():
 
 
     while True:
-        # 预览重命名日志
         preview_rename_log(rename_pairs)
         
         confirm = input("是否确认重命名？(Y/N)，或者第 k 个文件不重命名（输入 k）：").strip().upper()
